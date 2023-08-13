@@ -1,4 +1,4 @@
-COMMON_CFLAGS := -m64 -fPIC -march=skylake -Wall -Wextra -Wvla -Wswitch-enum -Wno-missing-field-initializers -fdiagnostics-color=always
+COMMON_CFLAGS := -m64 -fPIC -Wall -Wextra -Wvla -Wswitch-enum -Wno-missing-field-initializers -fdiagnostics-color=always
 DEBUG ?= 1
 
 ifeq ($(DEBUG), 1)
