@@ -2,7 +2,12 @@
 
 #include <string.h>
 #include <assert.h>
+
+#ifdef HAVE_BYTESWAP_H
 #include <byteswap.h>
+#else
+#include "crypto/compat.h"
+#endif
 
 #include <openssl/bn.h>
 #include <openssl/err.h>

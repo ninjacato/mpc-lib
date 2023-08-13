@@ -1,10 +1,15 @@
 #include "crypto/zero_knowledge_proof/diffie_hellman_log.h"
 #include "crypto/drng/drng.h"
-#include <byteswap.h>
 #include <string.h>
 #include <openssl/sha.h>
 
 #define LOG_ZKP_SALT "diffie hellman discrete log zkp"
+
+#ifdef HAVE_BYTESWAP_H
+#include <byteswap.h>
+#else
+#include "crypto/compat.h"
+#endif
 
 static inline int cmp_uint256(const uint8_t *a, const uint8_t *b)
 {
