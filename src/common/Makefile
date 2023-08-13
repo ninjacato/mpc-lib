@@ -24,13 +24,24 @@ Cpp_Objects := $(Cpp_Files:.cpp=.o)
 
 Include_Paths := -I. -I../../include
 
+BREW := $(shell brew -v >/dev/null 2>&1 || 0)
+ifeq (, ${BREW})
+	Include_Paths += -I $(shell brew --prefix openssl)/include
+	COMMON_CFLAGS += -L $(shell brew --prefix openssl)/lib
+	COMMON_CFLAGS += -Wno-deprecated-declarations -Wno-format -Wno-mismatched-tags -Wno-unused-command-line-argument
+endif
+
 C_Flags := $(COMMON_CFLAGS) -fstack-protector-strong
 C_Flags += $(Include_Paths)
 C_Flags += -Wno-unknown-pragmas
 
 Cpp_Flags := $(C_Flags) -std=c++17 -Wno-overloaded-virtual
 
-Link_Flags := $(COMMON_CFLAGS) -shared -Wl,--version-script=lib.lds -Wl,--no-undefined -Wl,-Bstatic -lcrypto -Wl,-Bdynamic -lpthread -ldl
+Link_Flags := $(COMMON_CFLAGS) -shared  -lcrypto -lpthread -ldl
+
+ifneq ($(shell uname -s),Darwin)
+	Link_Flags += -Wl,--version-script=lib.lds -Wl,--no-undefined -Wl,-Bstatic -Wl,-Bdynamic 
+endif
 
 Lib_Name := libcosigner.so
 
